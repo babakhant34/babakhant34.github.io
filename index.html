@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>BaBa-AgKt</title>
 	<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
 	 <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-app.js"></script>
@@ -114,13 +114,13 @@ function showError(error) {
 		<td>
 		</td>	
 		<td>
-		<input type="password" class="form-control" id="password" placeholder="Password"/>
+		<input type="password" class="form-control" id="password" placeholder="New Password For BaKhant Chat"/>
 		</td>
 
 	</tr>
 	<tr>
 		<td>
-
+		<input type="submit" class="btn btn-primary" value="Reset Password" id="resetbtn"></input>
 		</td>		
 		<td>
 			<input type="submit" class="btn btn-primary" value="Register" id="regbtn"></input>
@@ -179,18 +179,7 @@ function showError(error) {
 	 	getUserInfo();
 	 	register();
 	 	$('#conversation').hide();
-		// authClient = new FirebaseSimpleLogin(myChat, function(error, user) {
-		//   if (error) {
-		//     alert(error);
-		//     return;
-		//   }
-		//   if (user) {
-		//     doLogin(user);
-		//   } else {
-		//     showLoginBox();
-		//   }
-		// });
-		console.log(firebase);
+		//console.log(firebase);
 	});
 
 	$('#write').click(function(){
@@ -217,6 +206,14 @@ function showError(error) {
 		//return $('#'+userId).html();
 		return $('#1').html();
 	}
+
+	function passwordReset(){
+		$('#resetbtn').on('click',function(){
+			firebase.auth().sendPasswordResetEmail($('#email').val());
+			alert("password reset link has been sent to ur email");
+		});
+	}
+
 	function register() {
   		$("#regbtn").on("click", function() {
     	var email = $("#email").val();
@@ -229,7 +226,10 @@ function showError(error) {
   			var errorMessage = error.message;
   			console.log(errorCode);
   			console.log(errorMessage);
+  			alert(error.errorMessage);
 	});
+    showLoginBox(NaN,NaN);
+
     $("#email").val('');	
     $("#password").val('');
   });
@@ -237,15 +237,22 @@ function showError(error) {
 function doLogin(user){
 	console.log(user.email);
 }
-function showLoginBox() {
+function showLoginBox(email,password){
+	if(email==NaN){
+		email = $("#email").val();
+	}
+	if(password==NaN){
+		password = $("#password").val()
+	}
 	$("#loginbtn").on("click", function() {
 		console.log("in onclick");
-	firebase.auth().signInWithEmailAndPassword($("#email").val(), $("#password").val()).catch(function(error) {
+	firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error) {
 	  var errorCode = error.code;
 	  var errorMessage = error.message;
-
+	  alert(error.message);
 		});
 	 });
+
   	console.log("in show login");
   	register();
 }
