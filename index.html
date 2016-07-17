@@ -100,41 +100,34 @@ function showError(error) {
   </script>
 </head>
 <body>
-<table class="table" id="register">  
+<table class="" id="register" width="50%">  
 	<tr>	
-		<td>
-		</td>
-		<td>
+		<td colspan="3">
 			<input type="text" class="form-control" id="email" placeholder="Email"></input>
 		</td>
-		<td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<input type="password" class="form-control" id="password" placeholder="New Password For BaKhant Chat"/>
 		</td>
 	</tr>
 	<tr>
 		<td>
-		</td>	
-		<td>
-		<input type="password" class="form-control" id="password" placeholder="New Password For BaKhant Chat"/>
-		</td>
-
-	</tr>
-	<tr>
-		<td>
-		<input type="submit" class="btn btn-primary" value="Reset Password" id="resetbtn"></input>
+		<input type="submit" class="btn alert-danger" value="Reset Password" id="resetbtn"></input>
 		</td>		
 		<td>
-			<input type="submit" class="btn btn-primary" value="Register" id="regbtn"></input>
+			<input type="submit" class="btn alert-warning" value="Register" id="regbtn"></input>
 		</td>
 		<td>
-			<input type="submit" class="btn btn-primary" value="Login" id="loginbtn"></input>
+			<input type="submit" class="btn alert-success" value="Login" id="loginbtn" style="float:right;"></input>
 		</td>
 	</tr>
 	</table>
 <table class="table" id="conversation">
 	<tr>
-		<td></td>
+		<td><i>BaKhant Real Chat</i></td>
 		<td>
-						<input type="submit" class="btn alert-dnager" value="Logout" id="logoutbtn"></input>
+						<input type="submit" class="btn alert-danger" value="Logout" id="logoutbtn"></input>
 		</td>
 	</tr>
 	<tr>	
@@ -178,6 +171,7 @@ function showError(error) {
 	 $(document).ready(function(){
 	 	getUserInfo();
 	 	register();
+	 	passwordReset();
 	 	$('#conversation').hide();
 		//console.log(firebase);
 	});
@@ -210,7 +204,7 @@ function showError(error) {
 	function passwordReset(){
 		$('#resetbtn').on('click',function(){
 			firebase.auth().sendPasswordResetEmail($('#email').val());
-			alert("password reset link has been sent to ur email");
+			alert("Your Password reset link has been sent to your email");
 		});
 	}
 
@@ -218,44 +212,41 @@ function showError(error) {
   		$("#regbtn").on("click", function() {
     	var email = $("#email").val();
     	var password = $("#password").val();
-    	
-
-    	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-  		
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
   			var errorCode = error.code;
   			var errorMessage = error.message;
   			console.log(errorCode);
   			console.log(errorMessage);
-  			alert(error.errorMessage);
+  			alert(error.message);
 	});
-    showLoginBox(NaN,NaN);
-
+    //doLogin(email,password);
     $("#email").val('');	
     $("#password").val('');
   });
 }
-function doLogin(user){
-	console.log(user.email);
-}
-function showLoginBox(email,password){
-	if(email==NaN){
-		email = $("#email").val();
-	}
-	if(password==NaN){
-		password = $("#password").val()
-	}
-	$("#loginbtn").on("click", function() {
-		console.log("in onclick");
+function doLogin(email,password){
 	firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error) {
 	  var errorCode = error.code;
 	  var errorMessage = error.message;
-	  alert(error.message);
-		});
-	 });
-
-  	console.log("in show login");
-  	register();
+	  	alert(error.message);
+	});
 }
+function showLoginBox(email,password){
+	console.log(email);
+	$("#loginbtn").on("click", function() {
+		if(isNaN(email)){
+		email = $("#email").val();
+		console.log(email);
+	}
+	if(isNaN(password)){
+		password = $("#password").val();
+	}
+	console.log("in onclick");
+		doLogin(email,password);
+	});
+  	console.log("in show login");
+}
+
 function loadChat(){
 	console.log("in load chat");
 	firebase.database().ref(conversationId+"/"+date).limitToLast(50).on("child_added", function(snapshot, prevChildKey) {
@@ -302,8 +293,7 @@ function getUserInfo(){
 	    loadChat();
 	    loadLogout();
 	  } else {
-	    showLoginBox();
-
+	    showLoginBox(NaN,NaN);
 	  }
 	});
 }
