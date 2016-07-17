@@ -258,7 +258,7 @@ function loadChat(){
 	  	if(newPost.userId==userId){
 	  		$cont.append("<div style='display: block; width: 100%; padding:10px; float:none;'><div style='float:right;'>"+"<li class='btn btn-info' id="+prevChildKey+">"+newPost.text+"</li> me: "+getUserProfile(newPost.userId).toString()+"</div><br><br></div>");
 	  	}else{
-			$cont.append("<div style='display: block; width: 100%; padding:10px; float:none;'><div style='float:left;'>"+newPost.userId+ " :"+getUserProfile(newPost.userId).toString()+"<li class='btn btn-info' id="+prevChildKey+">"+newPost.text+"</li> </div><br><br></div>");
+			$cont.append("<div style='display: block; width: 100%; padding:10px; float:none;'><div style='float:left;'>"+newPost.userId.replace("@gmail.com","")+ " :"+getUserProfile(newPost.userId).toString()+"<li class='btn btn-info' id="+prevChildKey+">"+newPost.text+"</li> </div><br><br></div>");
 
 		}
 		$cont[0].scrollTop = $cont[0].scrollHeight;
