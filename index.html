@@ -138,12 +138,15 @@ function showError(error) {
 		</td>
 	</tr>
 	<tr>	
-		<td colspan="2">
+		<td>
 			<div id="chat" width="100%">
 				<ul id="text" width="100%">
 
 				</ul>
 			</div>
+		</td>
+		<td>
+			
 		</td>
 	</tr>
 	<tr>
@@ -227,6 +230,8 @@ function showError(error) {
   			console.log(errorCode);
   			console.log(errorMessage);
 	});
+    $("#email").val('');	
+    $("#password").val('');
   });
 }
 function doLogin(user){
