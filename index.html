@@ -169,19 +169,24 @@ function showError(error) {
 	var date= currdate.getDate()+'-'+(currdate.getMonth()+ 1) +'-'+ currdate.getFullYear();
 	var myChat = new Firebase("https://babakhant-65536.firebaseio.com/"+conversationId+"/"+date);
 	 $(document).ready(function(){
-	 	window.Notification.requestPermission(function() {
-            alert('Permissions state: ' + window.Notification.permission);
-        });
+	 	
 	 	getUserInfo();
 	 	register();
 	 	passwordReset();
 	 	$('#conversation').hide();
+	 	askNoti();
 		//console.log(firebase);
 	});
 
 	$('#write').click(function(){
 		saveData();
 	});
+
+	function askNoti(){
+		window.Notification.requestPermission(function() {
+            alert('Permissions state: ' + window.Notification.permission);
+        });
+	}
 
 	$('#txt').keypress(function(event){
 	var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -262,9 +267,8 @@ function loadChat(){
 			$cont.append("<div style='display: block; width: 100%; padding:10px; float:none;'><div style='float:left;'>"+newPost.userId.replace("@gmail.com","")+ " :"+getUserProfile(newPost.userId).toString()+"<li class='btn btn-info' id="+prevChildKey+">"+newPost.text+"</li> </div><br><br></div>");
 
 		}
-		//window.webkitNotifications.createNotification('icon.png', 'Notification Title', 'Notification content...');
 		var noti = new window.Notification(newPost.userId+" : "+newPost.text);
-		console.log(noti);
+		
 		$cont[0].scrollTop = $cont[0].scrollHeight;
 		var num = $("div").length;
 		if(num > 50){
